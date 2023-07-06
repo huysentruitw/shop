@@ -1,0 +1,49 @@
+/*.user
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+*_i.c
+*_p.c
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.vspscc
+.builds
+*.dotCover
+*.nupkg
+*.dll
+*.pdb
+*.lock.json
+bin/
+obj/
+
+# General editor
+.bak
+.orig
+
+# Test results
+TestResults/
+
+# Rider IDE folder
+.idea
+
+# Docker
+.docker
+.cr/
+.vs/
+__mismatch__
+.mongodb
+.rabbitmq
+.redis
+.mysql

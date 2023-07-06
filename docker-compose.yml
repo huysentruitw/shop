@@ -1,0 +1,15 @@
+﻿version: '3.8'
+
+services:
+  mysql:
+    image: 'mysql:8.0-debian'
+    restart: always
+    environment:
+      MYSQL_DATABASE: shop
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - '3306:3306'
+    volumes:
+      - .mysql:/var/lib/mysql

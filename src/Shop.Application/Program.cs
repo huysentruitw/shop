@@ -1,9 +1,11 @@
-﻿using Shop.Infrastructure;
+﻿var builder = WebApplication.CreateBuilder(args);
 
-var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetValue<string>("MySql:ConnectionString")
+    ?? throw new InvalidOperationException("MySql:ConnectionString not set");
 
-builder.Services.AddInfrastructure(x =>
-    x.AddGraphQL());
+builder.Services.AddInfrastructure(x => x
+    .AddEntityFramework(connectionString)
+    .AddGraphQL());
 
 var app = builder.Build();
 

@@ -16,6 +16,7 @@ public static class InfrastructureBuilderExtensions
             .RegisterDbContext<TDbContext>(DbContextKind.Pooled)
             .AddProjections()
             .AddQueryType<Query>()
+            .AddMutationType<Mutation>()
             .AddFairyBread()
             .AddValidatorsFromAssembly(builder.ServiceAssembly)
             .AddTypeExtensionsFromAssembly(builder.ServiceAssembly);

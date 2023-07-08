@@ -1,16 +1,20 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using HotChocolate.Execution.Configuration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Shop.Infrastructure.GraphQL;
 
 public static class InfrastructureBuilderExtensions
 {
-    public static InfrastructureBuilder AddGraphQL(this InfrastructureBuilder builder)
+    public static InfrastructureBuilder AddGraphQL<TDbContext>(this InfrastructureBuilder builder)
+        where TDbContext : DbContext
     {
         builder.Services
             .AddGraphQLServer()
+            .RegisterDbContext<TDbContext>(DbContextKind.Pooled)
+            .AddProjections()
             .AddQueryType<Query>()
             .AddFairyBread()
             .AddValidatorsFromAssembly(builder.ServiceAssembly)

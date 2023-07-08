@@ -4,8 +4,8 @@ var connectionString = builder.Configuration.GetValue<string>("MySql:ConnectionS
     ?? throw new InvalidOperationException("MySql:ConnectionString not set");
 
 builder.Services.AddInfrastructure(x => x
-    .AddEntityFramework(connectionString)
-    .AddGraphQL());
+    .AddEntityFramework<DataContext>(connectionString)
+    .AddGraphQL<DataContext>());
 
 var app = builder.Build();
 

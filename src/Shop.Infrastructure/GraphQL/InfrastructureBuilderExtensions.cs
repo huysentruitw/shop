@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using FluentValidation;
 using HotChocolate.Execution.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,14 +12,14 @@ public static class InfrastructureBuilderExtensions
         builder.Services
             .AddGraphQLServer()
             .AddQueryType<Query>()
+            .AddFairyBread()
+            .AddValidatorsFromAssembly(builder.ServiceAssembly)
             .AddTypeExtensionsFromAssembly(builder.ServiceAssembly);
         
         return builder;
     }
 
-    private static IRequestExecutorBuilder AddTypeExtensionsFromAssembly(
-        this IRequestExecutorBuilder builder,
-        Assembly assembly)
+    private static IRequestExecutorBuilder AddTypeExtensionsFromAssembly(this IRequestExecutorBuilder builder, Assembly assembly)
     {
         var types = assembly
             .GetTypes()
@@ -28,6 +29,16 @@ public static class InfrastructureBuilderExtensions
 
         foreach (var type in types)
             builder.AddTypeExtension(type);
+        
+        return builder;
+    }
+
+    private static IRequestExecutorBuilder AddValidatorsFromAssembly(this IRequestExecutorBuilder builder, Assembly assembly)
+    {
+        builder.Services.AddValidatorsFromAssembly(
+            assembly,
+            lifetime: ServiceLifetime.Singleton,
+            includeInternalTypes: true);
         
         return builder;
     }

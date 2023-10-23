@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Shop.Infrastructure.EntityFramework;
 
@@ -11,9 +12,13 @@ public static class InfrastructureBuilderExtensions
         builder.Services.AddPooledDbContextFactory<TDbContext>(
             options => options
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-                .UseMySql(connectionString, ServerVersion.Parse("8.0.31")),
+#if DEBUG
+                .EnableSensitiveDataLogging()
+                .LogTo(Console.WriteLine, LogLevel.Information)
+#endif
+                .UseSqlServer(connectionString),
             poolSize: 1024);
-        
+
         return builder;
     }
 }

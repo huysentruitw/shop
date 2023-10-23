@@ -1,15 +1,12 @@
 ﻿version: '3.8'
 
 services:
-  mysql:
-    image: 'mysql:8.0-debian'
+  mssql:
+    image: 'mcr.microsoft.com/mssql/server:2019-latest'
     restart: always
     environment:
-      MYSQL_DATABASE: shop
-      MYSQL_USER: mysql
-      MYSQL_PASSWORD: mysql
-      MYSQL_ROOT_PASSWORD: root
+      ACCEPT_EULA: Y
+      MSSQL_PID: Developer
+      SA_PASSWORD: P@ssw0rd
     ports:
-      - '3306:3306'
-    volumes:
-      - .mysql:/var/lib/mysql
+      - 11433:1433

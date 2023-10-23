@@ -1,7 +1,7 @@
 ﻿var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetValue<string>("MySql:ConnectionString")
-    ?? throw new InvalidOperationException("MySql:ConnectionString not set");
+var connectionString = builder.Configuration.GetValue<string>("MsSql:ConnectionString")
+    ?? throw new InvalidOperationException("MsSql:ConnectionString not set");
 
 builder.Services.AddInfrastructure(x => x
     .AddEntityFramework<DataContext>(connectionString)

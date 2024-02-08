@@ -7,14 +7,14 @@ internal sealed record Basket
 {
     public required Guid Id { get; init; }
 
-    public required Reservation[] Reservations { get; init; }
+    public required ICollection<Reservation> Reservations { get; init; }
 }
 
 internal sealed record Reservation
 {
     public required Guid ProductId { get; init; }
 
-    public required int Quantity { get; init; }
+    public required int Quantity { get; set; }
 }
 
 internal sealed class BasketEntityTypeConfiguration : IEntityTypeConfiguration<Basket>

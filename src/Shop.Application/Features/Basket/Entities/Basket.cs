@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace Shop.Application.Features.Basket.Entities;
+﻿namespace Shop.Application.Features.Basket.Entities;
 
 internal sealed record Basket
 {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Shop.Infrastructure.EntityFramework.Interceptors;
 
 namespace Shop.Infrastructure.EntityFramework;
 
@@ -11,6 +12,7 @@ public static class InfrastructureBuilderExtensions
         builder.Services.AddPooledDbContextFactory<TDbContext>(
             options => options
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                .AddInterceptors(new SaveChangesInterceptor())
 #if DEBUG
                 .EnableSensitiveDataLogging()
 #endif

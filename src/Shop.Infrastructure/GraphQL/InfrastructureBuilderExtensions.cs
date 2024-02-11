@@ -13,6 +13,7 @@ public static class InfrastructureBuilderExtensions
     {
         builder.Services
             .AddGraphQLServer()
+            .AddAuthorization()
             .RegisterDbContext<TDbContext>(DbContextKind.Pooled)
             .AddProjections()
             .AddQueryType<Query>()
@@ -20,7 +21,7 @@ public static class InfrastructureBuilderExtensions
             .AddFairyBread()
             .AddValidatorsFromAssembly(builder.ServiceAssembly)
             .AddTypeExtensionsFromAssembly(builder.ServiceAssembly);
-        
+
         return builder;
     }
 
@@ -28,13 +29,13 @@ public static class InfrastructureBuilderExtensions
     {
         var types = assembly
             .GetTypes()
-            .Where(x => 
+            .Where(x =>
                 x.GetCustomAttribute(typeof(ExtendObjectTypeAttribute)) is not null ||
                 x.GetCustomAttribute(typeof(ExtendObjectTypeAttribute<>)) is not null);
 
         foreach (var type in types)
             builder.AddTypeExtension(type);
-        
+
         return builder;
     }
 
@@ -44,7 +45,7 @@ public static class InfrastructureBuilderExtensions
             assembly,
             lifetime: ServiceLifetime.Singleton,
             includeInternalTypes: true);
-        
+
         return builder;
     }
 }

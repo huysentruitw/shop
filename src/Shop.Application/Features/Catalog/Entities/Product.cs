@@ -1,16 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace Shop.Application.Features.Catalog.Entities;
+﻿namespace Shop.Application.Features.Catalog.Entities;
 
 internal sealed record Product
 {
     public const int MaxNameLength = 200;
-    
+
     public required Guid Id { get; init; }
-    
+
     public required string Name { get; init; }
-    
+
     public required decimal UnitPrice { get; init; }
 }
 

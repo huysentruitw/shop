@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Shop.Application.Features.Basket;
+﻿namespace Shop.Application.Features.Basket;
 
 [ExtendObjectType<Mutation>]
 public sealed class AddReservationToBasketMutation

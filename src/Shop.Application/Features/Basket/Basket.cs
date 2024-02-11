@@ -1,5 +1,4 @@
 ﻿using HotChocolate.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace Shop.Application.Features.Basket;
 

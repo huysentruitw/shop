@@ -4,6 +4,7 @@ var connectionString = builder.Configuration.GetValue<string>("MsSql:ConnectionS
     ?? throw new InvalidOperationException("MsSql:ConnectionString not set");
 
 builder.Services.AddInfrastructure(x => x
+    .AddAuthentication()
     .AddEntityFramework<DataContext>(connectionString)
     .AddGraphQL<DataContext>());
 

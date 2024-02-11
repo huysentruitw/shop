@@ -1,6 +1,4 @@
-﻿using HotChocolate.Data;
-
-namespace Shop.Application.Features.Catalog;
+﻿namespace Shop.Application.Features.Catalog;
 
 [ExtendObjectType<Query>]
 public sealed class ProductsQuery

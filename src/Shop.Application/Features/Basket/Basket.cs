@@ -1,6 +1,4 @@
-﻿using HotChocolate.Data;
-
-namespace Shop.Application.Features.Basket;
+﻿namespace Shop.Application.Features.Basket;
 
 [ExtendObjectType<Query>]
 public sealed class BasketQuery

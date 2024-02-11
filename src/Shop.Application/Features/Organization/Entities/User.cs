@@ -18,12 +18,6 @@ internal sealed record User : Entity<Guid>
     public required string LastName { get; init; }
 
     public required bool AcceptsTermsAndConditions { get; init; }
-
-    #region Navigation Properties
-
-    public ICollection<Organization> Organizations { get; init; } = null!;
-
-    #endregion
 }
 
 internal sealed class UserEntityTypeConfiguration

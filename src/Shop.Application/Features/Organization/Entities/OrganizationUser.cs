@@ -25,7 +25,7 @@ internal sealed class OrganizationUserEntityTypeConfiguration
         builder.HasKey(x => new { x.OrganizationId, x.UserId });
 
         builder.HasOne(x => x.Organization)
-            .WithMany()
+            .WithMany(x => x.OrganizationUsers)
             .HasForeignKey(x => x.OrganizationId)
             .IsRequired()
             .OnDelete(DeleteBehavior.NoAction);

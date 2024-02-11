@@ -3,6 +3,7 @@
 global using FluentValidation;
 global using HotChocolate;
 global using HotChocolate.Authorization;
+global using HotChocolate.Data;
 global using HotChocolate.Types;
 
 global using Microsoft.EntityFrameworkCore;

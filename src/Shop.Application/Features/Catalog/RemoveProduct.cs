@@ -1,6 +1,4 @@
-﻿using Shop.Application.Exceptions;
-
-namespace Shop.Application.Features.Catalog;
+﻿namespace Shop.Application.Features.Catalog;
 
 [ExtendObjectType<Mutation>]
 public sealed class RemoveProductMutation

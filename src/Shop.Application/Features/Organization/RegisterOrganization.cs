@@ -3,37 +3,48 @@
 [ExtendObjectType<Mutation>]
 public sealed class RegisterOrganizationMutation
 {
-    [Authorize]
     public async Task<MutationResult> RegisterOrganization(
-        [Service] IPasswordHasher passwordHasher,
+        [Service] IAuthenticationService authenticationService,
         DataContext dataContext,
+        ClaimsPrincipal principal,
         RegisterOrganizationInput input)
     {
         await using var transaction = await dataContext.Database.BeginTransactionAsync();
 
-        // TODO When the user is logged in, input.InitialAccount should be null and we use the userId of the logged in user
-        Guid userId = Guid.Empty;
-        if (input.InitialAccount is not null)
-            userId = await CreateUser();
+        var userId = principal.FindUserId();
+        if (userId is not null)
+        {
+            // The user is logged in, we will link the organization to the user's account so InitialAccount must be null.
+            if (input.InitialAccount is not null)
+                throw new InitialAccountCannotBeSetWhileLoggedInException();
+        }
+        else
+        {
+            // The user is not logged in, we will create a new user and link the organization to that user.
+            if (input.InitialAccount is null)
+                throw new InitialAccountMustBeSetException();
+
+            userId = await CreateUser(input.InitialAccount);
+        }
 
         var newOrganization = await CreateOrganization();
-        await LinkAdminToOrganization(newOrganization, userId);
+        await SetAsAdminUser(newOrganization, userId.Value);
 
         await transaction.CommitAsync();
 
         return MutationResult.ForSubject(newOrganization.Id);
 
-        async Task<Guid> CreateUser()
+        async Task<Guid> CreateUser(OrganizationInitialAccountInput initialAccount)
         {
             // TODO There's a unique index on email, if the email is already taken, we'll have to ask the user to login instead
             var user = new Entities.User
             {
-                Email = input.InitialAccount.Email,
+                Email = initialAccount.Email,
                 EmailConfirmed = true, // TODO Set to false & send confirmation email instead
-                PasswordHash = passwordHasher.HashPassword(input.InitialAccount.Password),
-                FirstName = input.InitialAccount.FirstName,
-                LastName = input.InitialAccount.LastName,
-                AcceptsTermsAndConditions = input.InitialAccount.AcceptsTermsAndConditions,
+                PasswordHash = authenticationService.HashPassword(initialAccount.Password),
+                FirstName = initialAccount.FirstName,
+                LastName = initialAccount.LastName,
+                AcceptsTermsAndConditions = initialAccount.AcceptsTermsAndConditions,
             };
 
             await dataContext.AddAsync(user);
@@ -60,7 +71,7 @@ public sealed class RegisterOrganizationMutation
             return organization;
         }
 
-        async Task LinkAdminToOrganization(Entities.Organization organization, Guid adminUserId)
+        async Task SetAsAdminUser(Entities.Organization organization, Guid adminUserId)
         {
             var organizationUser = new Entities.OrganizationUser
             {
@@ -115,7 +126,9 @@ internal sealed class RegisterOrganizationInputValidator : AbstractValidator<Reg
         RuleFor(x => x.PostalCode).NotEmpty().MaximumLength(Entities.Organization.MaxPostalCodeLength);
         RuleFor(x => x.CountryCode).NotEmpty().MaximumLength(Entities.Organization.MaxCountryCodeLength);
         RuleFor(x => x.Url).Must(x => x is null || x.IsAbsoluteUri).WithMessage("The URL must be an absolute URI");
-        RuleFor(x => x.InitialAccount).NotNull().SetValidator(new OrganizationInitialAccountInputValidator()!);
+        RuleFor(x => x.InitialAccount)
+            .SetValidator(new OrganizationInitialAccountInputValidator()!)
+            .When(x => x.InitialAccount is not null);
     }
 }
 

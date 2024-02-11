@@ -11,7 +11,7 @@ internal sealed record User : Entity<Guid>
 
     public required bool EmailConfirmed { get; init; }
 
-    public required string PasswordHash { get; init; }
+    public required string PasswordHash { get; set; }
 
     public required string FirstName { get; init; }
 

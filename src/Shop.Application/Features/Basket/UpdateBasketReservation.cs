@@ -1,6 +1,4 @@
-﻿using Shop.Application.Exceptions;
-
-namespace Shop.Application.Features.Basket;
+﻿namespace Shop.Application.Features.Basket;
 
 [ExtendObjectType<Mutation>]
 public sealed class UpdateBasketReservationMutation

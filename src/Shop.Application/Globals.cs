@@ -1,4 +1,6 @@
-﻿global using FluentValidation;
+﻿global using System.Security.Claims;
+
+global using FluentValidation;
 global using HotChocolate;
 global using HotChocolate.Authorization;
 global using HotChocolate.Types;
@@ -12,3 +14,4 @@ global using Shop.Infrastructure.EntityFramework;
 global using Shop.Infrastructure.GraphQL;
 
 global using Shop.Application;
+global using Shop.Application.Exceptions;
